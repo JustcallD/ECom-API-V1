@@ -16,10 +16,11 @@ require("./config/Database");
 // import routes
 const authRouter = require("./routes/authRoutes");
 const userRoute = require("./routes/User");
+const productRoute = require("./routes/productRoutes");
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRoute);
-
+app.use("/api/product", userRoute);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server: http://localhost:${PORT}`);

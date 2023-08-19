@@ -49,14 +49,6 @@ const verifyJwt = (req, res, next) => {
 };
 
 const verifyTokenAndAuthorization = (req, res, next) => {
-  // verifyJwt(req, res, () => {
-  //   if (req.user && (req.user._id === req.params.id || req.user.isAdmin)) {
-  //     next();
-  //   } else {
-  //     res.status(403).json("You are not allowed to do that!");
-  //   }
-  // });
-
   verifyJwt(req, res, () => {
     if (req.user._id === req.params._id || req.user.isAdmin) {
       next();
@@ -65,5 +57,18 @@ const verifyTokenAndAuthorization = (req, res, next) => {
     }
   });
 };
+const verifyTokenAndAdmin = (req, res, next) => {
+  verifyToken(req, res, () => {
+    if (req.user.isAdmin) {
+      next();
+    } else {
+      res.status(403).json("You are not alowed to do that!");
+    }
+  });
+};
 
-module.exports = { verifyJwt, verifyTokenAndAuthorization };
+module.exports = {
+  verifyJwt,
+  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
+};
