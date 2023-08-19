@@ -39,14 +39,32 @@ const verifyJwt = (req, res, next) => {
       if (err) {
         res.status(403).send({ message: "Token is not valid" });
       } else {
-        req.user = user; // Set user data on the request object
-        next(); // Continue to the next middleware
+        req.user = user;
+        next();
       }
     });
   } else {
     res.status(401).send({ message: "Unauthorized" });
   }
 };
+
+// const verifyJwt = (req, res, next) => {
+//   const authHeader = req.headers.Authorization;
+
+//   if (authHeader && authHeader.startsWith("Bearer ")) {
+//     const token = authHeader.split(" ")[1];
+//     jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
+//       if (err) {
+//         res.status(403).send({ message: "Token is not valid" });
+//       } else {
+//         req.user = user; // Set user data on the request object
+//         next(); // Continue to the next middleware
+//       }
+//     });
+//   } else {
+//     res.status(401).send({ message: "Unauthorized" });
+//   }
+// };
 
 const verifyTokenAndAuthorization = (req, res, next) => {
   verifyJwt(req, res, () => {
@@ -58,7 +76,7 @@ const verifyTokenAndAuthorization = (req, res, next) => {
   });
 };
 const verifyTokenAndAdmin = (req, res, next) => {
-  verifyToken(req, res, () => {
+  verifyJwt(req, res, () => {
     if (req.user.isAdmin) {
       next();
     } else {
